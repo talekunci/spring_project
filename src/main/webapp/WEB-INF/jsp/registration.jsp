@@ -54,15 +54,13 @@
             let firstName = document.getElementById('firstName');
             let lastName = document.getElementById('lastName');
             let password = document.getElementById('password');
-            let roleId = ${defaultRoleId};
 
             function register() {
                 let body = {
                     password: password.value,
                     email: email.value,
                     firstName: firstName.value,
-                    lastName: lastName.value,
-                    roleId: roleId
+                    lastName: lastName.value
                 }
                 let url = '/registration';
                 fetch(url, {

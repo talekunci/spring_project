@@ -1,1 +1,1 @@
-$ docker run --name spring_project -e POSTGRES_PASSWORD=KJ9234jASDj32 -d postgres
+$ docker run --name spring_project -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres

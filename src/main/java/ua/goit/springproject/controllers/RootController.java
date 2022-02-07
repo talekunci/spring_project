@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.goit.springproject.dto.UserDto;
+import ua.goit.springproject.services.RoleService;
 import ua.goit.springproject.services.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,8 @@ public class RootController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private RoleService roleService;
 
     @GetMapping
     public String get(Model model, HttpServletResponse response) throws IOException {
@@ -45,8 +48,8 @@ public class RootController {
 
             model.addAttribute("buttons", buttons);
         } else {
-            response.sendRedirect("/users");
-            return "users";
+            response.sendRedirect("/products");
+            return "products";
         }
 
         return "welcomePage";
@@ -55,14 +58,13 @@ public class RootController {
     @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserDto());
-        model.addAttribute("defaultRoleId", service.getRoleByName("Admin").getId());
 
         return "registration";
     }
 
     @PostMapping("/registration")
     public void registerUser(@Valid @RequestBody UserDto dto, HttpServletResponse response) throws IOException {
-        service.registerNewAccount(dto);
+        service.create(dto);
 
         response.sendRedirect("/login");
     }

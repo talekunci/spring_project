@@ -1,6 +1,8 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-      <a class="navbar-brand" href="/users">Users</a>
+      <a class="navbar-brand" href="/products">Products</a>
 
 
 
@@ -9,9 +11,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/producers">Producers</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">Products</a>
-                </li>
+                <sec:authorize access="hasAuthority('Admin')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">Users</a>
+                    </li>
+                </sec:authorize>
             </ul>
         </div>
 

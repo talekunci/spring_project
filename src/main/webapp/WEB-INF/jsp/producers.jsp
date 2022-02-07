@@ -52,7 +52,7 @@
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                         <div class="btn-group me-2" role="group" aria-label="Second group">
                                             <a href="/producers/<c:out value = '${producer.id}'/>" type="button" class="btn btn-warning">Edit</a>
-                                            <button onclick="doDelete('${producer.id}')" type="button" class="btn btn-danger">Remove</button>
+                                            <button onclick="doDelete('/producers/<c:out value = '${producer.id}'/>')" type="button" class="btn btn-danger">Remove</button>
                                         </div>
                                     </div>
                                 </td>
@@ -66,15 +66,13 @@
     </div>
 
     <script>
-        function doDelete(id) {
-            let url = '/producers/' + id;
-
+        function doDelete(url) {
             fetch(url, {
                 method: 'DELETE'
             })
-            .then( _ => {
-                window.location.href = '/producers';
-            }
+            .then(() => {
+                    window.location.reload();
+                }
             );
         }
     </script>

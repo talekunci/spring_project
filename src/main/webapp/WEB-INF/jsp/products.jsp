@@ -55,7 +55,7 @@
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                         <div class="btn-group me-2" role="group" aria-label="Second group">
                                             <a href="/products/<c:out value = '${product.id}'/>" type="button" class="btn btn-warning">Edit</a>
-                                            <button onclick="doDelete('<c:out value = '${product.id}'/>')" type="button" class="btn btn-danger">Remove</button>
+                                            <button onclick="doDelete('/products/<c:out value = '${product.id}'/>')" type="button" class="btn btn-danger">Remove</button>
                                         </div>
                                     </div>
                                 </td>
@@ -68,15 +68,13 @@
     </div>
 
     <script>
-        function doDelete(id) {
-            let url = '/products/' + id;
-
+        function doDelete(url) {
             fetch(url, {
                 method: 'DELETE'
             })
-            .then( _ => {
-                window.location.href = '/products';
-            }
+            .then(() => {
+                    window.location.reload();
+                }
             );
         }
     </script>

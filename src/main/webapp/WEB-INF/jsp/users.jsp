@@ -35,7 +35,6 @@
                     <th scope="col">E-mail</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
-                    <th scope="col">Role</th>
 
                     <sec:authorize access="hasAuthority('Admin')">
                         <th scope="col">Action</th>
@@ -50,12 +49,12 @@
                             <td><c:out value = "${user.email}"/></td>
                             <td><c:out value = "${user.firstName}"/></td>
                             <td><c:out value = "${user.lastName}"/></td>
-                            <td><c:out value = "${user.role.name}"/></td>
 
                             <sec:authorize access="hasAuthority('Admin')">
                                 <td>
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                         <div class="btn-group me-2" role="group" aria-label="Second group">
+                                            <a href="/users/roles/<c:out value = '${user.id}'/>" type="button" class="btn btn-info">Roles</a>
                                             <a href="/users/<c:out value = '${user.id}'/>" type="button" class="btn btn-warning">Edit</a>
                                             <button onclick="doDelete('/users/<c:out value = '${user.id}'/>')" type="button" class="btn btn-danger">Remove</button>
                                         </div>
@@ -74,9 +73,9 @@
             fetch(url, {
                 method: 'DELETE'
             })
-            .then( _ => {
-                window.location.href = '/users';
-            }
+            .then(() => {
+                    window.location.reload();
+                }
             );
         }
     </script>

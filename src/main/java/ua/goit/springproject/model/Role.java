@@ -21,9 +21,8 @@ public class Role {
     private Long id;
     private String name;
 
-    //    @ManyToMany(mappedBy = "userRolesList")
-    @OneToMany(mappedBy = "role")
     @ToString.Exclude
+    @ManyToMany(mappedBy = "roles")
     private List<User> roleUsers = new ArrayList<>();
 
     public Role() {

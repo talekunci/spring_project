@@ -14,7 +14,7 @@
     <% ua.goit.springproject.dto.ProductDto product = (ua.goit.springproject.dto.ProductDto) request.getAttribute("product"); %>
 
     <div class="container">
-            <div class="row">
+            <div class="row mb-4">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group me-2" role="group" aria-label="Second group">
                         <a href="/products" type="button" class="btn btn-success">Back to products</a>
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="mb-3">
                     <label for="id" class="form-label">ID</label>
                     <input type="number" disabled class="form-control"

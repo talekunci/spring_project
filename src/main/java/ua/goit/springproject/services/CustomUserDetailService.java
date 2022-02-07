@@ -14,7 +14,6 @@ import ua.goit.springproject.repositories.UserRepository;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -49,7 +48,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return Stream.of(user.getRole())
+//            return Stream.of(user.getRole())
+//                    .map(role -> new SimpleGrantedAuthority(role.getName()))
+//                    .collect(Collectors.toList());
+
+            return user.getRoles().stream()
                     .map(role -> new SimpleGrantedAuthority(role.getName()))
                     .collect(Collectors.toList());
         }

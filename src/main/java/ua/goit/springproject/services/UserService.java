@@ -6,7 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ua.goit.springproject.dto.UserDto;
-import ua.goit.springproject.model.Role;
 import ua.goit.springproject.model.User;
 import ua.goit.springproject.repositories.RoleRepository;
 import ua.goit.springproject.repositories.UserRepository;
@@ -44,31 +43,13 @@ public class UserService {
                 .orElseThrow();
     }
 
-    public List<Role> getRoles() {
-        return roleRepository.findAll();
-    }
-
-    public Role getRoleByName(String name) {
-        return roleRepository.getByName(name);
-    }
-
     @Transactional
     public void create(UserDto dto) {
         User user = mapFromDto(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        roleRepository.findById(dto.getRoleId())
-                .ifPresent(user::setRole);
+        user.getRoles().add(roleRepository.getByName("User"));
 
         repository.save(user);
-    }
-
-    public void registerNewAccount(UserDto dto) {
-        long userRoleId = roleRepository.getByName("User").getId();
-
-        dto.setRoleId(userRoleId);
-
-        create(dto);
     }
 
     public void update(Long id, UserDto dto) {
@@ -83,11 +64,8 @@ public class UserService {
                     if (StringUtils.hasText(dto.getLastName()))
                         user.setLastName(dto.getLastName());
 
-                    if (StringUtils.hasText(dto.getPassword()))
-                        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-                    roleRepository.findById(dto.getRoleId())
-                            .ifPresent(user::setRole);
+                    if (dto.getRoles() != null)
+                        user.setRoles(dto.getRoles());
 
                     return user;
                 }).ifPresent(

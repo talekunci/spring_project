@@ -1,24 +1,27 @@
 package ua.goit.springproject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ua.goit.springproject.config.AccessForAdmin;
+import ua.goit.springproject.dto.RoleDto;
 import ua.goit.springproject.dto.UserDto;
-import ua.goit.springproject.model.User;
+import ua.goit.springproject.model.Role;
+import ua.goit.springproject.services.RoleService;
 import ua.goit.springproject.services.UserService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("/users")
+@AccessForAdmin
 public class UserController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private RoleService roleService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -29,43 +32,22 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String get(@PathVariable Long id,
-                      Model model,
-                      HttpServletResponse response) throws IOException {
-
-        boolean isAdmin = User.isAdmin(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        if (!isAdmin) {
-            response.sendRedirect("/users");
-            return "users";
-        }
+                      Model model) {
 
         model.addAttribute("user", service.get(id));
-        model.addAttribute("rolesList", service.getRoles());
 
         return "user";
     }
 
     @GetMapping("/new")
-    public String getNew(Model model,
-                         HttpServletResponse response) throws IOException {
-
-        boolean isAdmin = User.isAdmin(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        if (!isAdmin) {
-            response.sendRedirect("/users");
-            return "users";
-        }
-
+    public String getNew(Model model) {
         model.addAttribute("user", new UserDto());
-        model.addAttribute("rolesList", service.getRoles());
 
         return "user";
     }
 
     @PostMapping
     public void create(@Valid @RequestBody UserDto dto) {
-
-        boolean isAdmin = User.isAdmin(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        if (!isAdmin) return;
-
         service.create(dto);
     }
 
@@ -73,18 +55,58 @@ public class UserController {
     public void update(@PathVariable Long id,
                        @RequestBody UserDto dto) {
 
-        boolean isAdmin = User.isAdmin(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        if (!isAdmin) return;
-
         service.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-
-        boolean isAdmin = User.isAdmin(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        if (!isAdmin) return;
-
         service.delete(id);
+    }
+
+
+//    Roles
+
+    @GetMapping("/roles/{id}")
+    public String getRoles(@PathVariable Long id,
+                           Model model) {
+
+        UserDto dto = service.get(id);
+
+        model.addAttribute("user", dto);
+        model.addAttribute("userRoles", dto.getRoles());
+        model.addAttribute("roles", roleService.getAll());
+
+        return "userRoles";
+    }
+
+    @PutMapping("/roles/{id}")
+    public void addRole(@PathVariable Long id,
+                        @RequestParam Long roleId) {
+
+        UserDto user = service.get(id);
+        Role role = roleService.getById(roleId);
+
+        if (user != null && role != null
+                && !user.getRoles().contains(role)) {
+            user.getRoles().add(role);
+
+            service.update(id, user);
+        }
+    }
+
+    @DeleteMapping("/roles/{id}")
+    public void removeRole(@PathVariable Long id,
+                           @RequestParam Long roleId) {
+
+        UserDto user = service.get(id);
+        RoleDto role = roleService.getDto(roleId);
+
+        if (user != null && role != null
+                && !role.getName().equals("User")) {
+
+            user.getRoles().removeIf(r -> r.getId().equals(roleId));
+
+            service.update(id, user);
+        }
     }
 }

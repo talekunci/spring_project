@@ -6,9 +6,8 @@ import ua.goit.springproject.model.Role;
 import ua.goit.springproject.model.User;
 import ua.goit.springproject.validation.IsUnique;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @IsUnique(
@@ -28,11 +27,8 @@ public class UserDto {
     private String firstName;
     private String lastName;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Role role;
+    private Set<Role> roles;
 
-    @NotNull
-    @Min(0)
-    private Long roleId;
+    private Role role;
 
 }

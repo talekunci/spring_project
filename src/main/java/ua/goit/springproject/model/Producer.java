@@ -20,7 +20,7 @@ public class Producer {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "productProducer")
+    @OneToMany(mappedBy = "productProducer", cascade = CascadeType.ALL)
     private Set<Product> producerProductList;
 
     public Producer() {

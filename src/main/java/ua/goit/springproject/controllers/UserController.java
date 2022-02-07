@@ -53,7 +53,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public void update(@PathVariable Long id,
-                       @RequestBody UserDto dto) {
+                       @Valid @RequestBody UserDto dto) {
 
         service.update(id, dto);
     }
@@ -62,7 +62,6 @@ public class UserController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
-
 
 //    Roles
 

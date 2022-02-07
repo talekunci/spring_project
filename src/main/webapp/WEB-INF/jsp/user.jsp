@@ -15,7 +15,7 @@
         <% boolean creatingPage = request.getAttribute("javax.servlet.forward.request_uri").toString().endsWith("/new"); %>
 
         <div class="container">
-                <div class="row">
+                <div class="row mb-3">
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                         <div class="btn-group me-2" role="group" aria-label="Second group">
                             <a href="/users" type="button" class="btn btn-success">Back to users</a>
@@ -103,9 +103,9 @@
                         },
                         body: JSON.stringify(body)
                     })
-                    .then( _ => {
-                        window.location.href = '/users';
-                    }
+                    .then(() => {
+                            window.location.href = '/users';
+                        }
                     );
                 }
             </script>

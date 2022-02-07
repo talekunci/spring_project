@@ -11,7 +11,9 @@ import ua.goit.springproject.repositories.RoleRepository;
 import ua.goit.springproject.repositories.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +49,7 @@ public class UserService {
     public void create(UserDto dto) {
         User user = mapFromDto(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(roleRepository.getByName("User"));
+        user.setRoles(Set.of(roleRepository.getByName("User")));
 
         repository.save(user);
     }

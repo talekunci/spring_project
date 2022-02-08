@@ -3,6 +3,7 @@ package ua.goit.springproject.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.goit.springproject.config.AccessForAdmin;
 import ua.goit.springproject.dto.RoleDto;
@@ -47,8 +48,18 @@ public class UserController {
     }
 
     @PostMapping
-    public void create(@Valid @RequestBody UserDto dto) {
+    public String create(@Valid @RequestBody UserDto dto, BindingResult br,
+                         Model model) {
+
+        if (br.hasErrors()) {
+            model.addAttribute("user", dto);
+            model.addAttribute("errorMessage", br.getAllErrors().toString());
+
+            return "user";
+        }
+
         service.create(dto);
+        return getAll(model);
     }
 
     @PutMapping("/{id}")

@@ -23,6 +23,8 @@
                     </div>
                 </div>
 
+                <%@ include file="errorMessage.jsp" %>
+
                 <div class="row">
                     <div class="mb-3">
                         <label for="id" class="form-label">ID</label>
@@ -89,7 +91,7 @@
                     firstName: firstName.value,
                     lastName: lastName.value
                   }
-                  <% if(user.getId() == null) {%>
+                  <% if(creatingPage) {%>
                      let url = '/users';
                      let method = 'POST';
                   <% } else { %>
@@ -104,7 +106,8 @@
                         body: JSON.stringify(body)
                     })
                     .then(() => {
-                            window.location.href = '/users';
+                           // window.location.href = '/users';
+                            window.location.reload();
                         }
                     );
                 }

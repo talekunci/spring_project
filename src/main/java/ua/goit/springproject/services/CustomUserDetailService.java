@@ -48,10 +48,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-//            return Stream.of(user.getRole())
-//                    .map(role -> new SimpleGrantedAuthority(role.getName()))
-//                    .collect(Collectors.toList());
-
             return user.getRoles().stream()
                     .map(role -> new SimpleGrantedAuthority(role.getName()))
                     .collect(Collectors.toList());

@@ -59,7 +59,7 @@ public class UserController {
         }
 
         service.create(dto);
-        return getAll(model);
+        return "users";
     }
 
     @PutMapping("/{id}")
